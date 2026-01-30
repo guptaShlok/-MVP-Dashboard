@@ -5,6 +5,8 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, Folder, Plus, LogOut, Mail } from "lucide-react";
+import { ThemeToggle } from "./theme-provider";
+
 
 export default function Sidebar() {
   const { user, logout } = useAuth();
@@ -73,15 +75,18 @@ export default function Sidebar() {
           </div>
           <p>support@example.com</p>
         </div>
-        <Button
-          onClick={handleLogout}
-          variant="outline"
-          className="w-full justify-start bg-transparent"
-          size="sm"
-        >
-          <LogOut className="w-4 h-4 mr-2" />
-          Logout
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleLogout}
+            variant="outline"
+            className="flex-1 justify-start bg-transparent"
+            size="sm"
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            Logout
+          </Button>
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );

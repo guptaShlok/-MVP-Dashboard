@@ -122,8 +122,8 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <Card>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 ">
+        <Card className="cursor-pointer">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Active jobs
@@ -135,7 +135,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="cursor-pointer">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Avg. runtime
@@ -147,7 +147,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="cursor-pointer">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Success rate
@@ -159,7 +159,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="cursor-pointer">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Compute hours
@@ -177,7 +177,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Jobs Table */}
-      <Card>
+      <Card className="cursor-pointer">
         <CardHeader>
           <CardTitle>Recent jobs</CardTitle>
         </CardHeader>

@@ -14,6 +14,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ThemeToggle } from "@/components/theme-provider";
+
+
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -41,6 +44,9 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="absolute top-6 right-6 lg:hidden">
+        <ThemeToggle />
+      </div>
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-2">
           <CardTitle className="text-2xl">Production Optimizer</CardTitle>
