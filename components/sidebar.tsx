@@ -21,17 +21,19 @@ export default function Sidebar() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <div className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col">
+    <div className="w-72 bg-sidebar border-r border-sidebar-border flex flex-col">
       {/* Header */}
       <div className="p-6 border-b border-sidebar-border">
-        <h1 className="text-xl font-bold text-sidebar-foreground">
+        <h1 className="text-2xl font-bold text-sidebar-foreground">
           Production Optimizer
         </h1>
-        <p className="text-xs text-muted-foreground mt-2">{user?.username}</p>
+        <p className="text-xs text-muted-foreground mt-2">
+          User: <span className=" text-foreground">{user?.username.toUpperCase()}</span>
+        </p>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 p-4 flex flex-col gap-1 ">
         <Link href="/dashboard">
           <Button
             variant={isActive("/dashboard") ? "default" : "ghost"}

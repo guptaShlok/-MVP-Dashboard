@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Upload, Copy, Check } from "lucide-react";
+import { ArrowLeft, Copy, Check } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -41,11 +41,41 @@ interface FormData {
   use_global_matrix: boolean;
   fallback_marker: string;
   cost_to_minutes_factor: string;
+  override_matrix: string;
   max_runtime_minutes: string;
   target_gap_percent: string;
   enable_warmstart: boolean;
   parallel_threads: string;
 }
+
+interface Matrix {
+  rows: number[];
+}
+
+const parseMatrix = (matrixString: string): Matrix | null => {
+  if (!matrixString.trim()) return null;
+
+  try {
+    const lines = matrixString.trim().split("\n");
+    const rows: number[] = [];
+
+    for (const line of lines) {
+      const values = line.split(/[\s,]+/).filter((v) => v);
+      if (values.length > 0) {
+        for (const val of values) {
+          const num = parseFloat(val);
+          if (!isNaN(num)) {
+            rows.push(num);
+          }
+        }
+      }
+    }
+
+    return rows.length > 0 ? { rows } : null;
+  } catch {
+    return null;
+  }
+};
 
 export default function CreateRequestPage() {
   const router = useRouter();
@@ -69,6 +99,7 @@ export default function CreateRequestPage() {
     use_global_matrix: true,
     fallback_marker: "999",
     cost_to_minutes_factor: "5",
+    override_matrix: "0 10 20\n10 0 15\n20 15 0",
     max_runtime_minutes: "60",
     target_gap_percent: "5",
     enable_warmstart: true,
@@ -98,7 +129,7 @@ export default function CreateRequestPage() {
     2,
   );
 
-  const handleInputChange = (field: keyof FormData, value: any) => {
+  const handleInputChange = (field: keyof FormData, value: string | boolean) => {
     setFormData({ ...formData, [field]: value });
   };
 
@@ -130,7 +161,7 @@ export default function CreateRequestPage() {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-6 max-w-5xl overflow-y-scroll mx-auto h-screen">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <Link href="/dashboard">
@@ -148,7 +179,10 @@ export default function CreateRequestPage() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className=" space-y-6"
+      >
         {/* 1. Basic Request Metadata */}
         <Card>
           <CardHeader>
@@ -346,6 +380,54 @@ export default function CreateRequestPage() {
                   />
                   <span className="text-sm font-medium">Use Global Matrix</span>
                 </label>
+              </div>
+            </div>
+
+            {/* Matrix Input and Preview */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">
+                  Override Matrix (rows comma/space sep)
+                </label>
+                <textarea
+                  value={formData.override_matrix}
+                  onChange={(e) =>
+                    handleInputChange("override_matrix", e.target.value)
+                  }
+                  placeholder="0 10 20&#10;10 0 15&#10;20 15 0"
+                  className="w-full h-32 p-3 bg-secondary border border-border rounded-lg text-foreground placeholder-muted-foreground font-mono text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              {/* Matrix Preview */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Matrix Preview</label>
+                <div className="p-4 bg-secondary border border-border rounded-lg h-32 overflow-auto">
+                  {formData.override_matrix &&
+                  parseMatrix(formData.override_matrix) ? (
+                    <div className="space-y-2">
+                      {formData.override_matrix.split("\n").map((row, idx) => {
+                        const values = row.split(/[\s,]+/).filter((v) => v);
+                        return (
+                          <div key={idx} className="flex gap-2">
+                            {values.map((val, vidx) => (
+                              <div
+                                key={vidx}
+                                className="w-10 h-10 flex items-center justify-center bg-primary/10 border border-primary/30 rounded text-xs font-mono text-foreground"
+                              >
+                                {val}
+                              </div>
+                            ))}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
+                      Matrix preview will appear here
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </CardContent>

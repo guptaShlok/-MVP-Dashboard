@@ -190,7 +190,7 @@ export default function DashboardPage() {
             <div className="text-center py-8">
               <p className="text-muted-foreground mb-4">No requests found</p>
               <Link href="/dashboard/create-request">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" className=" cursor-pointer">
                   <Plus className="w-4 h-4 mr-2" />
                   Create your first request
                 </Button>
